@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "name": "Amaze UI React Starter Kit",
+  "launch_path": "/index.html",
+  "description": "An Amaze UI template that helps you build fast, modern mobile web apps.",
+  "icons": {
+    "128": "/i/touch/icon-128x128.png"
+  },
+  "developer": {
+    "name": "",
+    "url": ""
+  },
+  "installs_allowed_from": [
+    "*"
+  ],
+  "default_locale": "zh_CN",
+  "permissions": {
+  },
+  "locales": {
+    "en": {
+      "name": "Amaze UI React Starter Kit",
+      "description": "An Amaze UI React template that helps you build fast, modern mobile web apps.",
+    },
+    "zh_CN": {
+      "name": "Amaze UI React 启动工具包",
+      "description": "Amaze UI React 新手入门快速上手工具包"
+    }
+  }
+}
