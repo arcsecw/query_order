@@ -2,7 +2,7 @@ export const myConfig ={
     des:'站点基本信息',
     footer:'订单查询demo',
     brand:'订单查询demo',
-    fetch_url:'http://139.129.58.131:3006/',
+    fetch_url:'http://localhost:3005/',
     pages:[
         {
             des:'',
