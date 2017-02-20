@@ -2,66 +2,15 @@ export const myConfig ={
     des:'站点基本信息',
     footer:'订单查询demo',
     brand:'订单查询demo',
-    fetch_url:'http://localhost:3005/',
+    fetch_url:'http://localhost:5000',
+    client_id:'OWPOfhsoMySRAMwTYD6cJhFt8pABAQr9HQbQ4C8T',
     pages:[
         {
-            des:'',
-            teamid:'1',
-            1:[
-            {
-                des:'',
-                title:'',
-            },
-            {
-                des:'',                
-                title:'',
-            },
-            ]
-        },
-        {
-            des:'',
-            teamid:'',
-            1:[
-            {
-                des:'',
-                title:'',
-            },
-            {
-                des:'',                
-                title:'',
-            },
-            ]
-        },
-        {
             des:'订单查询',
-            teamid:'3',
-            1:[
-            {
-                des:'',
-                title:'',
-            },
-            {
-                des:'',                
-                title:'',
-            },
-            ]
+            teamid:'1',
         },
         {
-            des:'',
-            teamid:'4',
-            1:[
-            {
-                des:'',
-                title:'',
-            },
-            {
-                des:'',                
-                title:'',
-            },
-            ]
-        },
-        {
-            des:'测试页面',
-            teamid:'5',
+            des:'短信发送平台',
+            teamid:'2',
         },
     ]};

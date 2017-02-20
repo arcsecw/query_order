@@ -8,7 +8,7 @@ import {
   Table,
 } from 'amazeui-react';
 import { myConfig } from '../components/config.js';
-import {m_post} from '../components/Call'
+import {get} from '../components/Call'
 
 var EventRow = React.createClass({
   render: function() {
@@ -83,7 +83,7 @@ var Task1  =  React.createClass( {
         for(let k in this.state.parms){
             form1.append(k,this.state.parms[k])
         }
-        m_post('/',form1,(re)=>{
+        get('query_order',this.state.parms,(re)=>{
           console.log(re)
           re = re['r']
           var tre = []
@@ -118,7 +118,7 @@ class Index extends React.Component {
         return (
        <Container className="am-padding-vertical-lg">
        
-        <h2>{myConfig.pages[2].des}</h2>      
+        <h2>{myConfig.pages[0].des}</h2>      
         <Tabs animation = 'slide'>
             <Tabs.Item eventKey="1" title="订单查询">
                     <Task1  title="查询工具"/>        

@@ -68,6 +68,7 @@
   },
   "dependencies": {
     "whatwg-fetch": "^1.0.0",
-    "react-spinjs": "^3.0.0"
+    "react-spinjs": "^3.0.0",
+    "xlsx":"latest"
   }
 }
