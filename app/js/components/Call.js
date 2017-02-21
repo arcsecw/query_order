@@ -24,7 +24,7 @@ function get_token(username,password,cb){
         d.append('password',password)
         d.append('grant_type','password')
         d.append('client_id',client_id)
-        m_post('oauth/token',d,(re)=>{
+        post('oauth/token',d,(re)=>{
             var timestamp=new Date().getTime()                
             localStorage.access_token = re.access_token
             localStorage.refresh_token = re.refresh_token
@@ -34,34 +34,16 @@ function get_token(username,password,cb){
         })
     } 
 function get_userinfo(){
-    if(localStorage.username == undefined){
+    if(localStorage.username != undefined){
+        return localStorage.username        
+    }else{
         get('user_info','',(re)=>{
             localStorage.username = re.username
         })
     }
-    return localStorage.username
 }    
-    //刷新token函数
-function refresh_token(cb){
-    var timestamp=new Date().getTime()       
-    if(localStorage.expires_at!=undefined && localStorage.expires_at<timestamp){
-        var d = new FormData()
-        d.append('grant_type','refresh_token')
-        d.append('refresh_token',localStorage.refresh_token)
-        d.append('client_id',client_id)
-        m_post('oauth/token',d,(re)=>{
-            var timestamp=new Date().getTime()                
-        localStorage.access_token = re.access_token
-        localStorage.refresh_token = re.refresh_token
-        localStorage.expires_at = timestamp + re.expires_in * 1000
-        cb()
-        console.log('token refreshed') 
-        })    
-    }else{
-        cb()
-    }
-}
-function m_get(apipath,data,cb) {
+
+function get(apipath,data,cb) {
     var myHeaders = new Headers()
     myHeaders.append('Authorization','Bearer '+localStorage.access_token)
     var url = u+'/'+apipath  +'?'     
@@ -86,7 +68,7 @@ function m_get(apipath,data,cb) {
 
 }
 //post 方法
-function m_post(apipath,form,cb) {
+function post(apipath,form,cb) {
     var url = u+'/'+apipath       
     //var f = document.getElementById('myform');
     //var form = new FormData(f)
@@ -116,7 +98,7 @@ function m_post(apipath,form,cb) {
 
 }
 //post 方法
-function m_post_json(apipath,json,cb) {
+function post_json(apipath,json,cb) {
     var url = u+'/'+apipath       
     var myHeaders = new Headers()
     myHeaders.append('Authorization','Bearer '+localStorage.access_token) 
@@ -141,35 +123,75 @@ function m_post_json(apipath,json,cb) {
 }
 //交互之前检查token是否过期
 
+
 //封装后的post方法
-function post (apipath,form,cb){
-    refresh_token(()=>{
-        m_post(apipath,form,cb)
-    })
-    
-}
-//封装后的post方法
-function post_json (apipath,form,cb){
-    refresh_token(()=>{
-        m_post_json(apipath,form,cb)
-    })
-    
-}
+
 //封装后的get方法
-function get (apipath,data,cb){
-    refresh_token(()=>{
-        m_get(apipath,data,cb)
-    })
-    
+    //刷新token函数
+function refresh_token(cb){
+        var d = new FormData()
+        d.append('grant_type','refresh_token')
+        d.append('refresh_token',localStorage.refresh_token)
+        d.append('client_id',client_id)
+        t_post('oauth/token',d,(re)=>{
+        var timestamp=new Date().getTime()                
+        localStorage.access_token = re.access_token
+        localStorage.refresh_token = re.refresh_token
+        localStorage.removeItem("refreshing")        
+        cb()
+        })    
 }
+function t_post(apipath,form,cb) {
+    var url = u+'/'+apipath       
+    
+    var myHeaders = new Headers()
+           
+    fetch(url,{
+        method:'POST',
+        body:form,
+        headers:myHeaders,
+        mode:'cors'
+    })
+        .then(t_checkStatus)
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            cb(data)
+        })
+        .catch(error => {
+            console.log('Request failed: ', error)
+        });
+
+}
+function t_checkStatus(response){
+    if (response.status >= 200 && response.status < 300) {
+        return response;
+    }else {
+        localStorage.clear()
+        window.location.replace("/")
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+    }
+}
+
 
 function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return response;
     } else {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
+        if(response.status==401&&localStorage.refreshing!=1){
+            localStorage.refreshing = 1
+            refresh_token(()=>{
+            console.log("token_refreshed!")
+            })
+        }else if(localStorage.refreshing!=1){
+            var error = new Error(response.statusText);
+            error.response = response;
+            throw error;
+        }
+        
     }
 }
 

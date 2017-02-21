@@ -24,14 +24,15 @@ import cPickle
 from flask import  request,Response
 
 
-users = cPickle.load(open('./users.pd','r'))
+# users = cPickle.load(open('./users.pd','r'))
+users = []
 client = MongoClient()
 collect = client['eve']['orders']
 
 
 app = Eve(auth=BearerAuth)
 ResourceOwnerPasswordCredentials(app)
-app.debug = True
+# app.debug = True
 app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app)
 
@@ -83,4 +84,4 @@ def del_sended():
 from werkzeug.contrib.fixers import ProxyFix
 app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=3001)

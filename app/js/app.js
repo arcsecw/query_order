@@ -66,6 +66,7 @@ import All from './pages/All'
 import Login from './pages/Login'
 import Logout from './pages/Logout'
 function requireAuth(nextState, replace) {
+  console.log(localStorage)
   if (localStorage.refresh_token==undefined){
     console.log("您无权访问本页面")
       replace({

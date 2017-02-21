@@ -17,16 +17,12 @@ def add(username):
     client = MongoClient()
     collect = client['eve']['orders']
     msg = messager()
-    collect.update_many({"send_status":"0","add_by":username},{"$set":{"send_status":"1"}})
+    collect.update_many({"send_status":"0","add_by":username},{"$set":{"send_status":"1","message":"发送中"}})
     to_be_send = collect.find({"send_status":"1","add_by":username})
     for order in to_be_send:
         try :
             re = msg.kuaidi(order['name'],order['kuaidi'],order['order_nb'],order['phone'])
-            if re !=None:
-                collect.update_one({"_id":ObjectId(order['_id'])},{"$set":{"send_status":"2"}})
-            else:
-                collect.update_one({"_id":ObjectId(order['_id'])},{"$set":{"send_status":"0"}})
-        except :
-            collect.update_one({"_id":ObjectId(order['_id'])},{"$set":{"send_status":"0"}})
-
+            collect.update_one({"_id":ObjectId(order['_id'])},{"$set":{"send_status":"2","message":"成功"}})
+        except Exception,e:
+            collect.update_one({"_id":ObjectId(order['_id'])},{"$set":{"send_status":"0","message":str(e)}})
     return 'all_done'

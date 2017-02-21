@@ -9,3 +9,5 @@ app = Celery('tes', broker=brokers, backend=backend)
 @app.tasks
 def add(x, y):
     return x + y
+
+from flask_sentinel import models

@@ -43,6 +43,9 @@ orders = {
         'add_by': {
             'type': 'string',
         },
+        'message': {
+            'type': 'string',
+        },
     }
 }
 

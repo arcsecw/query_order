@@ -26,6 +26,8 @@ var EventRow = React.createClass({
         <td>{event.add_by}</td>        
         <td>{new Date(event._created).toLocaleDateString()}</td>
         <td>{new Date(event._updated).toLocaleDateString()}</td>
+        <td>{event.message}</td>        
+        
       </tr>
     );
   }
@@ -48,6 +50,7 @@ var EventsTable = React.createClass({
             <th>添加人</th>
             <th>创建时间</th>
             <th>修改时间</th>
+            <th>信息</th>
           </tr>
         </thead>
         <tbody>
@@ -74,10 +77,11 @@ var Task3  =  React.createClass( {
             this.setState({"order_not_sent":re._items})
           })
     },
-    componentWillMount(){
+    componentDidMount(){
       this.update_source()
     },
-    del_sended(){
+    del_sended(e){
+      e.preventDefault();
       get('del_sended','',(re)=>{
         this.update_source()
       })
@@ -86,7 +90,7 @@ var Task3  =  React.createClass( {
         return (
                 <Container>
                 <ButtonToolbar>
-                    <Input  type = "submit" value="删除全部" standalone onClick={this.del_sended} />
+                    <Input  type = "submit" value="删除下面通知过的订单" standalone onClick={this.del_sended} />
                 </ButtonToolbar>
                 <br/>
                 <EventsTable events={this.state.order_not_sent} responsive bordered /> 
@@ -109,7 +113,7 @@ var Task2  =  React.createClass( {
             this.setState({"order_not_sent":re._items})
           })
     },
-    componentWillMount(){
+    componentDidMount(){
       this.update_source()
     },
     
@@ -138,7 +142,7 @@ var Task1  =  React.createClass( {
             this.setState({"order_not_sent":re._items})
           })
     },
-    componentWillMount(){
+    componentDidMount(){
       this.update_source()
     },
     add_order_from_dict(arr){
@@ -166,12 +170,14 @@ var Task1  =  React.createClass( {
         reader.readAsBinaryString(f);
 
   },
-  do_it(){
+  do_it(e){
+    e.preventDefault();
     get('do_it','',(re)=>{
       this.update_source()      
     })
   },
-  remove_all(){
+  remove_all(e){
+    e.preventDefault();
     get('del_all','',(re)=>{
       this.update_source()
     })
@@ -191,6 +197,7 @@ var Task1  =  React.createClass( {
                 order.group_name = re.filename
                 order.add_by = get_userinfo()
                 order.send_status = '0'
+                order.message = '初次提交'
                 tre.push(order)
             })
             post_json('orders',JSON.stringify(tre),(r)=>{
@@ -203,11 +210,11 @@ var Task1  =  React.createClass( {
         return (
                 <Container>
                 <form className="am-form" id = 'myform'>
-                <Input type="file" label="订单文件" id = "my_file"/>
+                <Input type="file" label="订单excel文件" id = "my_file"/>
                 <ButtonToolbar>
-                    <Input  type = "submit" value="提交" standalone onClick={this.handle_submit} />
-                    <Input type="submit" value="执行" amStyle="danger" standalone onClick={this.do_it}/>
-                    <Input type="submit" value="删除全部" amStyle="danger" standalone onClick={this.remove_all}/>
+                    <Input  type = "submit" value="上传文件" standalone onClick={this.handle_submit} />
+                    <Input type="submit" value="发送短信" amStyle="danger" standalone onClick={this.do_it}/>
+                    <Input type="submit" value="删除下面的订单" amStyle="danger" standalone onClick={this.remove_all}/>
                 </ButtonToolbar>
                 </form>
                 <br/>
@@ -224,15 +231,15 @@ class Message extends React.Component {
        
         <h2>{myConfig.pages[1].des}</h2>      
         <Tabs animation = 'slide'>
-            <Tabs.Item eventKey="1" title="待发送">
-                    <Task1  title="待发送"/>         
+            <Tabs.Item eventKey="1" title="待通知订单">
+                    <Task1  title="待通知订单"/>         
             </Tabs.Item>
-            <Tabs.Item eventKey="2" title="队列中">
-                    <Task2  title="队列中"/>        
+            <Tabs.Item eventKey="2" title="短信发送中">
+                    <Task2  title="短信发送中"/>        
                     
             </Tabs.Item>
-            <Tabs.Item eventKey="3" title="已发送">
-                    <Task3  title="已发送"/>        
+            <Tabs.Item eventKey="3" title="发送成功的订单">
+                    <Task3  title="发送成功的订单"/>        
             </Tabs.Item>
 
             

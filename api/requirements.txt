@@ -4,3 +4,6 @@ werkzeug
 pandas
 xlrd
 celery
+flask-cors
+eve
+redis

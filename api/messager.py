@@ -25,7 +25,7 @@ class messager :
             resp= req.getResponse()
             return resp
         except Exception,e:
-            pass
+            raise e
     '''
     2月20日的需求发送短信
     '''
@@ -43,10 +43,12 @@ class messager :
         return self._exec(req)
 
 if __name__ == '__main__':
-    from pymongo import MongoClient
-    client = MongoClient()
-    collect = client['eve']['orders']
-    print [i for i in collect.find()]
-    #m = messager()
-    #re = m.kuaidi("王文超","顺丰快递","2015020273","1316110370")
-    #print re
+    #from pymongo import MongoClient
+    #client = MongoClient()
+    #collect = client['eve']['orders']
+    #print [i for i in collect.find()]
+    m = messager()
+    try :
+        re = m.kuaidi("王文超","顺丰快递","2015020273","1316110370")
+    except Exception,e:
+        print str(e)
