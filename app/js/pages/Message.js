@@ -10,12 +10,15 @@ import {
 import { myConfig } from '../components/config.js';
 import {post,get,get_userinfo,post_json} from '../components/Call'
 var EventRow = React.createClass({
+  timestring(a){
+    var a = new Date(a)
+    return a.toLocaleDateString()+'-'+a.getHours()+':'+a.getMinutes()
+  },
   render: function() {
     
     var event = this.props.event;
     var className = event.highlight ? 'am-active' :
       event.disabled ? 'am-disabled' : '';
-
     return (
       <tr className={className}>
         <td>{event.name}</td>
@@ -24,8 +27,8 @@ var EventRow = React.createClass({
         <td>{event.kuaidi}</td>
         <td>{event.group_name}</td>
         <td>{event.add_by}</td>        
-        <td>{new Date(event._created).toLocaleDateString()}</td>
-        <td>{new Date(event._updated).toLocaleDateString()}</td>
+        <td>{this.timestring(event._created)}</td>
+        <td>{this.timestring(event._updated)}</td>
         <td>{event.message}</td>        
         
       </tr>
@@ -72,13 +75,27 @@ var Task3  =  React.createClass( {
             }
     },
     update_source(){
-        console.log(get_userinfo())
-          get('orders',{where:`{"send_status":"2","add_by":"${get_userinfo()}"}`},(re)=>{
+        var a = get_userinfo()
+        var a = new Date()
+        a.setDate(a.getDate()-7)
+        a = a.toGMTString()
+          get('orders',{where:`{"send_status":"2","add_by":"${get_userinfo()}","_created":{"$gte":"${a}"}}`},(re)=>{
             this.setState({"order_not_sent":re._items})
           })
     },
     componentDidMount(){
       this.update_source()
+    },
+    componentWillReceiveProps(nextProps, nextState){
+      try{
+        var a = this.props.query
+        var b = this.props.query
+      if( a? b:!b){
+        this.update_source()
+      }
+      }
+      catch(E){
+      } 
     },
     del_sended(e){
       e.preventDefault();
@@ -108,7 +125,8 @@ var Task2  =  React.createClass( {
             }
     },
     update_source(){
-        console.log(get_userinfo())
+        var a = get_userinfo()
+        
           get('orders',{where:`{"send_status":"1","add_by":"${get_userinfo()}"}`},(re)=>{
             this.setState({"order_not_sent":re._items})
           })
@@ -116,7 +134,17 @@ var Task2  =  React.createClass( {
     componentDidMount(){
       this.update_source()
     },
-    
+    componentWillReceiveProps(nextProps, nextState){
+      try{
+        var a = this.props.query
+        var b = this.props.query
+      if( a? b:!b){
+        this.update_source()
+      }
+      }
+      catch(E){
+      } 
+    },
     render() {
         return (
                 <Container>
@@ -137,17 +165,26 @@ var Task1  =  React.createClass( {
             }
     },
     update_source(){
-        console.log(get_userinfo())
+        var a = get_userinfo()
+       
           get('orders',{where:`{"send_status":"0","add_by":"${get_userinfo()}"}`},(re)=>{
             this.setState({"order_not_sent":re._items})
           })
     },
     componentDidMount(){
-      this.update_source()
+        this.update_source()
+      
     },
-    add_order_from_dict(arr){
-      var s = JSON.stringify(arr)
-        
+    componentWillReceiveProps(nextProps, nextState){
+      try{
+        var a = this.props.query
+        var b = this.props.query
+      if( a? b:!b){
+        this.update_source()
+      }
+      }
+      catch(E){
+      } 
     },
     get_info_from_file(ele,cb){
       var to_dict = function(workbook,name) {
@@ -182,8 +219,8 @@ var Task1  =  React.createClass( {
       this.update_source()
     })
   },
-    handle_submit(e){
-        e.preventDefault();
+    handle_change(e){
+      e.preventDefault()
         if(document.getElementById("my_file").files.length==0){
           return
         }
@@ -210,9 +247,8 @@ var Task1  =  React.createClass( {
         return (
                 <Container>
                 <form className="am-form" id = 'myform'>
-                <Input type="file" label="订单excel文件" id = "my_file"/>
+                <Input type="file" label="订单excel文件" id = "my_file" onChange={this.handle_change}/>
                 <ButtonToolbar>
-                    <Input  type = "submit" value="上传文件" standalone onClick={this.handle_submit} />
                     <Input type="submit" value="发送短信" amStyle="danger" standalone onClick={this.do_it}/>
                     <Input type="submit" value="删除下面的订单" amStyle="danger" standalone onClick={this.remove_all}/>
                 </ButtonToolbar>
@@ -225,21 +261,25 @@ var Task1  =  React.createClass( {
 })
 
 class Message extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      change: false,
+    };
+  }
+  
   render() {
         return (
        <Container className="am-padding-vertical-lg">
        
         <h2>{myConfig.pages[1].des}</h2>      
-        <Tabs animation = 'slide'>
-            <Tabs.Item eventKey="1" title="待通知订单">
-                    <Task1  title="待通知订单"/>         
+        <Tabs animation = 'slide' onSelect = {()=>{this.setState({change:!this.state.change})}}>
+            <Tabs.Item eventKey="1" title="待通知订单" >
+                    <Task1  title="待通知订单" query = {this.state.change}/>         
             </Tabs.Item>
-            <Tabs.Item eventKey="2" title="短信发送中">
-                    <Task2  title="短信发送中"/>        
-                    
-            </Tabs.Item>
+            
             <Tabs.Item eventKey="3" title="发送成功的订单">
-                    <Task3  title="发送成功的订单"/>        
+                    <Task3  title="发送成功的订单" query = {this.state.change}/>        
             </Tabs.Item>
 
             
