@@ -23,8 +23,8 @@ var EventRow = React.createClass({
       <tr className={className}>
         <td>{event.name}</td>
         <td>{event.phone}</td>
-        <td>{event.order_nb}</td>
         <td>{event.kuaidi}</td>
+        <td>{event.order_nb}</td>        
         <td>{event.message}</td>        
         
       </tr>
@@ -43,8 +43,8 @@ var EventsTable = React.createClass({
           <tr>
             <th>姓名</th>
             <th>手机号</th>
-            <th>订单号</th>
             <th>快递方</th>
+            <th>订单号</th>            
             <th>短信发送状态</th>
           </tr>
         </thead>
@@ -236,7 +236,10 @@ var Task1  =  React.createClass( {
         return (
                 <Container>
                 <form className="am-form" id = 'myform'>
-                <Input type="file" label="订单excel文件" id = "my_file" onChange={this.handle_change}/>
+                <h5>
+                <a href = '/i/order.xlsx'>点我下载</a>订单excel文件模板
+                </h5>
+                <Input type="file"  id = "my_file" onChange={this.handle_change}/>
                 <ButtonToolbar>
                     <Input type="submit" value="发送短信" amStyle="danger" standalone onClick={this.do_it}/>
                     <Input type="submit" value="删除下面的订单" amStyle="danger" standalone onClick={this.remove_all}/>
