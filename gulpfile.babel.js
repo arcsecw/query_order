@@ -129,9 +129,11 @@ gulp.task('browserify', function() {
 
 // 压缩 HTML
 gulp.task('html', function() {
+  var version = '?v='+new Date().getTime()
   return gulp.src('app/**/*.html')
     .pipe($.minifyHtml())
-    .pipe($.replace(/\{\{__VERSION__\}\}/g, isProduction ? '.min' : ''))
+    .pipe($.replace(/\{\{__MIN__\}\}/g, isProduction ? '.min' : ''))
+    .pipe($.replace(/\{\{__VERSION__\}\}/g, isProduction ? version : ''))
     .pipe(gulp.dest('dist'))
     .pipe($.size({title: 'html'}));
 });
