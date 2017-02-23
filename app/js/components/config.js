@@ -3,7 +3,7 @@ export const myConfig ={
     footer:'梵大集团',
     brand:'梵大集团',
     fetch_url:'http://120.25.102.188:3001',
-    client_id:'yC7bARKOQgWR4GWUrDPWRCDDcY57LcM18QqGXZkO',
+    client_id:'7euPdadbHrzme3hivUTC75VNJqgWEKWtTHZCfdit',
     pages:[
         {
             des:'短信发送平台',
