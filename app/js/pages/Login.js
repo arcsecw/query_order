@@ -40,16 +40,25 @@ var Login =withRouter( React.createClass({
           
        <Container className="am-padding-vertical-lg">
         <h1>&nbsp;</h1>
-       
-        <Panel >
+       <Grid className="doc-g">
+      <Col sm={7}>&nbsp;</Col>
+      <Col sm={5}>
+      <Panel header="用户登录" amStyle="warning">
         <form className="am-form" id = 'myform'>
                 <Input type="text" addonBefore={iconUser}  label="用户名"  onChange = {(e)=>{this.setState({"username":e.target.value})}} />
                 <Input type="password" addonBefore={iconPassword} label="密码"  onChange = {(e)=>{this.setState({"password":e.target.value})}} />
+                <Grid className="doc-g">
+                <Col sm={8}>&nbsp;</Col>
                 <ButtonToolbar>
                     <Input  type = "submit" value="登录系统" standalone onClick={this.handle_submit} />
                 </ButtonToolbar>
+                </Grid>
+                
         </form>
        </Panel>    
+      </Col>
+    </Grid>
+        
         
       </Container>
     )
