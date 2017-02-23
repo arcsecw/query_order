@@ -12,7 +12,7 @@ import {post,get,get_userinfo,post_json} from '../components/Call'
 var EventRow = React.createClass({
   timestring(a){
     var a = new Date(a)
-    return a.toLocaleDateString()+'-'+a.getHours()+':'+a.getMinutes()
+    return `${a.getMonth()+1}月${a.getDate()+1}日 ${a.getHours()}:${a.getMinutes()}`
   },
   render: function() {
     
@@ -25,10 +25,6 @@ var EventRow = React.createClass({
         <td>{event.phone}</td>
         <td>{event.order_nb}</td>
         <td>{event.kuaidi}</td>
-        <td>{event.group_name}</td>
-        <td>{event.add_by}</td>        
-        <td>{this.timestring(event._created)}</td>
-        <td>{this.timestring(event._updated)}</td>
         <td>{event.message}</td>        
         
       </tr>
@@ -49,11 +45,7 @@ var EventsTable = React.createClass({
             <th>手机号</th>
             <th>订单号</th>
             <th>快递方</th>
-            <th>分组</th>
-            <th>添加人</th>
-            <th>创建时间</th>
-            <th>修改时间</th>
-            <th>信息</th>
+            <th>短信发送状态</th>
           </tr>
         </thead>
         <tbody>
@@ -106,10 +98,7 @@ var Task3  =  React.createClass( {
     render() {
         return (
                 <Container>
-                <ButtonToolbar>
-                    <Input  type = "submit" value="删除下面通知过的订单" standalone onClick={this.del_sended} />
-                </ButtonToolbar>
-                <br/>
+               
                 <EventsTable events={this.state.order_not_sent} responsive bordered /> 
                 </Container>
         )
@@ -237,9 +226,9 @@ var Task1  =  React.createClass( {
                 order.message = '初次提交'
                 tre.push(order)
             })
+            document.getElementById('myform').reset()            
             post_json('orders',JSON.stringify(tre),(r)=>{
               this.update_source()
-              document.getElementById('myform').reset()
             })
         })
     },
@@ -272,7 +261,7 @@ class Message extends React.Component {
         return (
        <Container className="am-padding-vertical-lg">
        
-        <h2>{myConfig.pages[1].des}</h2>      
+        <h2>短信发送</h2>      
         <Tabs animation = 'slide' onSelect = {()=>{this.setState({change:!this.state.change})}}>
             <Tabs.Item eventKey="1" title="待通知订单" >
                     <Task1  title="待通知订单" query = {this.state.change}/>         

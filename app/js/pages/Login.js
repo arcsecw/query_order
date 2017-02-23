@@ -7,6 +7,9 @@ import {
   Item,
   Icon,
   Table,
+  Panel,
+  Col,
+  Grid,
 } from 'amazeui-react';
 import { myConfig } from '../components/config.js';
 import { get_token } from '../components/Call';
@@ -23,7 +26,7 @@ var Login =withRouter( React.createClass({
       e.preventDefault();
       get_token(this.state.username,this.state.password,(re)=>{
           if(localStorage.refresh_token!=undefined)  {
-            this.props.router.replace('/run?team=1')
+            this.props.router.replace('/run?team=2')
           }      
       })
       
@@ -31,18 +34,23 @@ var Login =withRouter( React.createClass({
   },
   render() {
        var iconUser = <Icon icon="user" />;
+       var iconPassword = <Icon icon="lock" />;
         return (
+    
+          
        <Container className="am-padding-vertical-lg">
+        <h1>&nbsp;</h1>
        
-        <h2>用户登录</h2>      
+        <Panel >
         <form className="am-form" id = 'myform'>
-                <Input type="text" addonBefore={iconUser} addonAfter='必填' label="用户名"  onChange = {(e)=>{this.setState({"username":e.target.value})}} />
-                <Input type="password" addonBefore={iconUser} addonAfter='必填' label="用户名"  onChange = {(e)=>{this.setState({"password":e.target.value})}} />
+                <Input type="text" addonBefore={iconUser}  label="用户名"  onChange = {(e)=>{this.setState({"username":e.target.value})}} />
+                <Input type="password" addonBefore={iconPassword} label="密码"  onChange = {(e)=>{this.setState({"password":e.target.value})}} />
                 <ButtonToolbar>
-                    <Input  type = "submit" value="提交" standalone onClick={this.handle_submit} />
-                    <Input type="reset" value="重置" amStyle="danger" standalone />
+                    <Input  type = "submit" value="登录系统" standalone onClick={this.handle_submit} />
                 </ButtonToolbar>
         </form>
+       </Panel>    
+        
       </Container>
     )
   }

@@ -187,6 +187,9 @@ function checkStatus(response) {
             console.log("token_refreshed!")
             })
         }else if(localStorage.refreshing!=1){
+            if(response.status==422){
+                alert ('接口处理不了您提供的数据格式,请检查并重试')
+            }
             var error = new Error(response.statusText);
             error.response = response;
             throw error;

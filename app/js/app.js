@@ -61,7 +61,6 @@ class App extends Component {
 }
 
 // Pages
-import Index from './pages/Index';
 import All from './pages/All'
 import Login from './pages/Login'
 import Logout from './pages/Logout'

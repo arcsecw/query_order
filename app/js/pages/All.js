@@ -17,8 +17,6 @@ class All extends React.Component {
   render() {
     var team_id = this.props.location.query.team
     switch(team_id){
-    case '1':
-        return <Index/>
     case '2':
         return <Message/>
     case '10':
