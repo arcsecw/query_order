@@ -145,7 +145,7 @@ gulp.task('clean', function() {
 
 // 构建任务
 gulp.task('build', function(cb) {
-  runSequence('clean', ['styles', 'html', 'images', 'copy', 'browserify'], cb);
+  runSequence('clean', ['styles', 'html', 'copy', 'browserify'], cb);
 });
 
 // 监视源文件变化自动cd编译
